@@ -20,11 +20,8 @@ jobs:
         run: git submodule update --init
 
       - name: Set up CMake
-        uses: threeal/cmake-action@main
-        with: 
-          cmake-version: '3.26.0'
-	  run-build: false
-
+	run: sudo apt-get update -y 
+        run: sudo apt-get -y install cmake
 
       - name: Create build directory
         run: mkdir -p build
