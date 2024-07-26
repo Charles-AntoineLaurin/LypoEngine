@@ -20,7 +20,7 @@ jobs:
         run: git submodule update --init
 
       - name: Set up CMake
-	run: sudo apt-get update -y 
+	      run: sudo apt-get update -y 
         run: sudo apt-get -y install cmake
 
       - name: Create build directory
