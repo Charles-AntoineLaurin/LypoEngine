@@ -20,7 +20,7 @@ jobs:
         run: git submodule update --init
 
       - name: Set up CMake
-        uses: cmake/ctest-nightly@v2
+        uses: threeal/cmake-action@main
         with: 
           cmake-version: '3.26.0'
 
