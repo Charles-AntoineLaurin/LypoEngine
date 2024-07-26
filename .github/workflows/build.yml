@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build submodules
-        uses: git submodule update --init
+        run: git submodule update --init
 
       - name: Set up CMake
         uses: cmake/ctest-nightly@v2
@@ -41,6 +41,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Build submodules
+        run: git submodule update --init
 
       - name: Set up CMake
         uses: kitware/cmake@v3
