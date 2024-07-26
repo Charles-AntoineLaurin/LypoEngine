@@ -23,7 +23,8 @@ jobs:
         uses: threeal/cmake-action@main
         with: 
           cmake-version: '3.26.0'
-    	  run-build: false
+	  run-build: false
+
 
       - name: Create build directory
         run: mkdir -p build
