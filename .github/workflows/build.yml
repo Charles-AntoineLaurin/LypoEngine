@@ -19,8 +19,10 @@ jobs:
       - name: Build submodules
         run: git submodule update --init
 
-      - name: Set up CMake
+      - name: Update apt-get
 	      run: sudo apt-get update -y 
+      
+      - name: Install CMake
         run: sudo apt-get -y install cmake
 
       - name: Create build directory
