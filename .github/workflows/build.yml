@@ -22,11 +22,11 @@ jobs:
       - name: Create build directory
         run: mkdir -p build
 
-      - name: Configure CMake
-        run: cmake -S . -B build
-
-      - name: Build
-        run: cmake --build build
+      - name: Configure Wayland+X11 static library
+        run: cmake -B build-full-static -D GLFW_BUILD_WAYLAND=ON -D GLFW_BUILD_X11=ON
+      
+      - name: Build Wayland+X11 static library
+        run: cmake --build build-full-static --parallel
 
         # Ajouter apres les runs de tests
 
