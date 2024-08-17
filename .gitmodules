@@ -1,3 +1,6 @@
 [submodule "LypoEngine/dep/glfw"]
 	path = LypoEngine/dep/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "test/dependencies/googletest"]
+	path = test/dependencies/googletest
+	url = https://github.com/google/googletest.git
