@@ -57,14 +57,14 @@ jobs:
                   echo "All tests passed!"
                 fi
   # ********** ARTIFACT *************************** #
-  save-artifact:
+  save-artifact-linux:
         runs-on: ubuntu-latest
         needs: [run-tests-linux]
         steps:
           - uses: actions/upload-artifact@v4
             with:
-            name: build-static-linux
-            path: ./build-full-static/lypo_engine
+              name: build-static-linux
+              path: ./build-full-static/lypo_engine
   
 
 
@@ -116,7 +116,7 @@ jobs:
                   exit 1
                 }
   # ********** ARTIFACT *************************** #
-  save-artifact:
+  save-artifact-windows:
         runs-on: windows-latest
         needs: [run-tests]
         steps:
