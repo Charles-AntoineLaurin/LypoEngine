@@ -1,4 +1,4 @@
-name: Build cpp project with CMake
+name: Project pipeline
 
 on:
   push:
@@ -8,10 +8,11 @@ on:
     branches:
       - main
 
-jobs: 
+jobs:
+  # ********** LINUX PIPESTEPS ***************** #
+  # ********** BUILD *************************** #
   build-linux:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,14 +30,49 @@ jobs:
       
       - name: Build Wayland+X11 static library
         run: cmake --build build-full-static --parallel
+  # ********** TEST *************************** #
+  run-tests-linux:
+        runs-on: ubuntu-latest
+        needs: [build-linux]
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Build tests folder
+              run: |
+                cd test
+                mkdir build
+                cd build
+            - name: Create executable
+              run: |
+                cmake ..
+                make
+            - name: Runing tests
+              run: |
+                ./lypo_engine_test
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-static-linux
-          path: ./build-full-static/lypo_engine
+                if [ $? != 0 ]
+                  echo "Some tests failed!"
+                  exit 1
+                else
+                  echo "All tests passed!"
+                fi
+  # ********** ARTIFACT *************************** #
+  save-artifact:
+        runs-on: ubuntu-latest
+        needs: [run-tests-linux]
+        steps:
+          - uses: actions/upload-artifact@v4
+            with:
+            name: build-static-linux
+            path: ./build-full-static/lypo_engine
+  
 
-        # Ajouter apres les runs de tests
 
+
+
+  
+  # ********** WINDOWS PIPESTEPS ***************** #
+  # ********** BUILD *************************** #
   build-windows:
     runs-on: windows-latest
 
@@ -52,8 +88,39 @@ jobs:
 
       - name: Build Win32 static x64 library
         run: cmake --build build-win32-static-x64 --parallel
-      
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-static-windows
-          path: ./build-full-static/lypo_engine.exe
+  # ********** TEST *************************** #
+  run-tests-windows:
+        runs-on: windows-latest
+        needs: [build-windows]
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Build tests folder
+              run: |
+                cd test
+                mkdir build
+                cd build
+            - name: Create executable
+              run: |
+                cmake ..
+                make
+            - name: Runing tests
+              run: |
+                ./lypo_engine_test.exe
+                
+                if ($? -eq 0) {
+                  "All test passed!"
+                }
+                else {
+                  "Some tests failed!"
+                  exit 1
+                }
+  # ********** ARTIFACT *************************** #
+  save-artifact:
+        runs-on: windows-latest
+        needs: [run-tests]
+        steps:
+            - uses: actions/upload-artifact@v4
+              with:
+                name: build-static-windows
+                path: ./build-full-static/lypo_engine.exe
